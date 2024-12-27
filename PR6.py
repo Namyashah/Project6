@@ -1,5 +1,9 @@
-def Demo(Add_Deposit):
+Information = []
+class InsufficientFundsError(Exception):
+    pass
+def demo(Add_Deposit):
     if Add_Deposit>0 :
+        
         for i in Information :
             New_Deposits = i["Deposits"]+Add_Deposit
             i["Deposits"] = New_Deposits
@@ -7,7 +11,7 @@ def Demo(Add_Deposit):
     else :
         raise ValueError("The Amount must be Positive!!")
         
-def Demo1():
+def demo1():
     Web = {}
     Account_Holder = input("Enter Your Name = ")
     Balance = int(input("Enter initial Deposit Amount = "))
@@ -19,9 +23,17 @@ def Demo1():
     else :
         print("The Amount you haved Enter is negative!")
         
-Information = []
-class InsufficientFundsError(Exception):
-    pass
+def demo2(withdrawal):
+    if withdrawal>0:
+        for i in Information:
+            if withdrawal>i["Deposits"]:
+                raise InsufficientFundsError("Your Account does not have enough balance sorry!")
+            else :
+                new_Deposits = i["Deposits"]-withdrawal
+                i["Deposits"] = new_Deposits
+                print(f"withdrawed Successfully! Your Current Balance is : {new_Deposits}")
+    else :
+        raise ValueError("The Amount you haved entered is negative!")
 print("Welcome to the Robust Banking System!")
 while True :
     print("Please select an option:")
@@ -30,30 +42,34 @@ while True :
     print("3.Withdraw Funds")
     print("4.Check Balance")
     print("5.Exit")
-    try :
-        choice = int(input("Enter the choice you want = "))
+    try:
+        choice = int(input("Enter the choice you want = ")) 
         if choice==1 :
             try :
-                Demo1()
+                demo1()
             except :
                 print("General Exception Block!!")
         elif choice==2 :
             try :
-                Demo(int(input("Enter Deposit Amount = ")))
-            except ValueError as e :
+                demo(int(input("Enter Deposit Amount = ")))
+            except ValueError as e : 
                 print(f"Not Possible Because of {e}")
             except :
                 print("General Exception Block!!")
         elif choice==3 :
-            pass
+            try :
+                demo2(int(input("Enter withdrawal Amount = ")))
+            except InsufficientFundsError as e : 
+                print(f"Not Possible Because of {e}")
+            except :
+                print("General Exception Block!!")
         elif choice==4 :
             for i in Information :
                 print("Your Current Balance is :",i["Deposits"])
         elif choice==5 :
             print("Thank you for using the Robust Banking System! Goodbye!")
             break
-        else :
-            if choice>5 :
-                print("Error: Invalid choice. Please select a valid option.")   
-    except :
+        else:
+            raise TypeError()   
+    except:
         print("Error: Invalid choice. Please select a valid option.")
